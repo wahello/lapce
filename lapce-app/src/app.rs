@@ -3792,7 +3792,7 @@ pub fn launch() {
     watch(
         &mut watcher,
         Directory::themes_directory(),
-        notify::RecursiveMode::Recursive,
+        notify::RecursiveMode::NonRecursive,
     );
     watch(
         &mut watcher,
