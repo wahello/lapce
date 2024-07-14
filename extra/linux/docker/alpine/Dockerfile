@@ -94,27 +94,31 @@ RUN \
 #!/usr/bin/env bash
 set -euxo pipefail
 
+export XX_CC_PREFER_LINKER=lld
+
 xx-clang --setup-target-triple
 xx-clang --wrap
 
-export RUSTFLAGS="-C linker=clang -C link-arg=-fuse-ld=/usr/bin/ld.lld"
+if ! xx-info is-cross; then
+  export OPENSSL_DIR="/usr"
+else
+  export OPENSSL_DIR="/$(xx-info triple)/usr"
+fi
+
+export RUSTFLAGS="-C linker=lld -C target-feature=+crt-static"
 export PKG_CONFIG="$(xx-clang --print-prog-name=pkg-config)"
 export CARGO_BUILD_TARGET="$(xx-cargo --print-target-triple)"
 
 xx-cargo build \
   --frozen \
-  --package lapce-app \
+  --bin lapce-proxy \
   --profile release-lto \
-  --no-default-features 
-  
-export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+crt-static"
+  --no-default-features
 
-xx-cargo build
-
-xx-verify "${CARGO_TARGET_DIR}"/"$(xx-cargo --print-target-triple)"/release-lto/lapce
+xx-verify "${CARGO_TARGET_DIR}"/"$(xx-cargo --print-target-triple)"/release-lto/lapce-proxy
 
 mkdir -p /target
-mv -v "${CARGO_TARGET_DIR}"/"$(xx-cargo --print-target-triple)"/release-lto/lapce /target/
+mv -v "${CARGO_TARGET_DIR}"/"$(xx-cargo --print-target-triple)"/release-lto/lapce-proxy /target/
 
 cargo pkgid | cut -d'#' -f2 | cut -d'@' -f2 | cut -d':' -f2 | tee /target/lapce.version
 EOF
@@ -124,17 +128,17 @@ RUN <<EOF
 #!/usr/bin/env bash
 set -euxo pipefail
 
-echo 'a'
+mv /target/lapce-proxy /output/
 EOF
 
 FROM build-base AS dev
 COPY . ./dev
 
 FROM scratch AS binary
-COPY --from=build /output/lapce .
+COPY --from=build /output/lapce-proxy .
 
 FROM scratch AS cross-binary
-COPY --from=build /output/lapce .
+COPY --from=build /output/lapce-proxy .
 
 # FROM scratch AS package
 # COPY --from=build /output/*.deb .
