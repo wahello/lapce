@@ -3212,6 +3212,7 @@ dependencies = [
  "lapce-xi-rope",
  "libc",
  "lsp-types",
+ "meta",
  "notify",
  "nucleo",
  "once_cell",
@@ -3255,7 +3256,6 @@ dependencies = [
  "arc-swap",
  "directories",
  "floem-editor-core",
- "git2",
  "hashbrown",
  "include_dir",
  "itertools 0.12.1",
@@ -3263,6 +3263,7 @@ dependencies = [
  "lapce-xi-rope",
  "libloading 0.8.1",
  "lsp-types",
+ "meta",
  "once_cell",
  "regex",
  "remain",
@@ -3304,6 +3305,7 @@ dependencies = [
  "libc",
  "locale_config",
  "lsp-types",
+ "meta",
  "notify",
  "parking_lot",
  "polling",
@@ -3575,6 +3577,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5a634b1c61a95585bd15607c6ab0c4e5b226e695ff2800ba0cdccddf208c406c"
 dependencies = [
  "autocfg",
+]
+
+[[package]]
+name = "meta"
+version = "0.4.0"
+dependencies = [
+ "anyhow",
+ "git2",
+ "strum",
+ "strum_macros",
 ]
 
 [[package]]

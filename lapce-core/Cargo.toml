@@ -20,6 +20,7 @@ tracing      = { workspace = true }
 regex        = { workspace = true }
 
 lsp-types         = { workspace = true }
+meta              = { workspace = true }
 lapce-xi-rope     = { workspace = true }
 lapce-rpc         = { workspace = true }
 floem-editor-core = { workspace = true }
@@ -35,7 +36,3 @@ tree-sitter = { version = "0.22.6" }
 default      = []
 portable     = []
 distribution = []
-
-[build-dependencies]
-anyhow = { workspace = true }
-git2   = { workspace = true }
