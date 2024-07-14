@@ -70,7 +70,6 @@ use crate::{
         from_marked_string, from_plaintext, parse_markdown, MarkdownContent,
     },
     snippet::Snippet,
-    tracing::*,
     window_tab::{CommonData, Focus, WindowTabData},
 };
 
@@ -2308,7 +2307,7 @@ impl EditorData {
             });
     }
 
-    #[instrument]
+    #[tracing::instrument]
     pub fn word_at_cursor(&self) -> String {
         let doc = self.doc();
         let region = self.cursor().with_untracked(|c| match &c.mode {
@@ -2343,13 +2342,13 @@ impl EditorData {
         }
     }
 
-    #[instrument]
+    #[tracing::instrument]
     pub fn clear_search(&self) {
         self.common.find.visual.set(false);
         self.find_focus.set(false);
     }
 
-    #[instrument]
+    #[tracing::instrument]
     fn search(&self) {
         let pattern = self.word_at_cursor();
 
@@ -2367,7 +2366,7 @@ impl EditorData {
         self.common.find.replace_focus.set(false);
     }
 
-    #[instrument]
+    #[tracing::instrument]
     pub fn pointer_down(&self, pointer_event: &PointerInputEvent) {
         self.cancel_completion();
         self.cancel_inline_completion();
@@ -2412,7 +2411,7 @@ impl EditorData {
         }
     }
 
-    #[instrument]
+    #[tracing::instrument]
     fn left_click(&self, pointer_event: &PointerInputEvent) {
         match pointer_event.count {
             1 => {
@@ -2428,22 +2427,22 @@ impl EditorData {
         }
     }
 
-    #[instrument]
+    #[tracing::instrument]
     fn single_click(&self, pointer_event: &PointerInputEvent) {
         self.editor.single_click(pointer_event);
     }
 
-    #[instrument]
+    #[tracing::instrument]
     fn double_click(&self, pointer_event: &PointerInputEvent) {
         self.editor.double_click(pointer_event);
     }
 
-    #[instrument]
+    #[tracing::instrument]
     fn triple_click(&self, pointer_event: &PointerInputEvent) {
         self.editor.triple_click(pointer_event);
     }
 
-    #[instrument]
+    #[tracing::instrument]
     pub fn pointer_move(&self, pointer_event: &PointerMoveEvent) {
         let mode = self.cursor().with_untracked(|c| c.get_mode());
         let (offset, is_inside) =
@@ -2495,17 +2494,17 @@ impl EditorData {
         }
     }
 
-    #[instrument]
+    #[tracing::instrument]
     pub fn pointer_up(&self, pointer_event: &PointerInputEvent) {
         self.editor.pointer_up(pointer_event);
     }
 
-    #[instrument]
+    #[tracing::instrument]
     pub fn pointer_leave(&self) {
         self.common.mouse_hover_timer.set(TimerToken::INVALID);
     }
 
-    #[instrument]
+    #[tracing::instrument]
     fn right_click(&self, pointer_event: &PointerInputEvent) {
         let mode = self.cursor().with_untracked(|c| c.get_mode());
         let (offset, _) = self.editor.offset_of_point(mode, pointer_event.pos);
@@ -2567,7 +2566,7 @@ impl EditorData {
         show_context_menu(menu, None);
     }
 
-    #[instrument]
+    #[tracing::instrument]
     fn update_hover(&self, offset: usize) {
         let doc = self.doc();
         let path = doc
@@ -2811,7 +2810,7 @@ impl KeyPressFocus for EditorData {
         }
     }
 
-    #[instrument]
+    #[tracing::instrument]
     fn check_condition(&self, condition: Condition) -> bool {
         match condition {
             Condition::InputFocus => {
@@ -2849,7 +2848,7 @@ impl KeyPressFocus for EditorData {
         }
     }
 
-    #[instrument]
+    #[tracing::instrument]
     fn run_command(
         &self,
         command: &crate::command::LapceCommand,

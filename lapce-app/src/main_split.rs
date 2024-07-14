@@ -29,7 +29,7 @@ use lsp_types::{
     DocumentChanges, OneOf, Position, TextEdit, Url, WorkspaceEdit,
 };
 use serde::{Deserialize, Serialize};
-use tracing::{event, Level};
+use tracing::{trace, TraceLevel};
 
 use crate::{
     alert::AlertButton,
@@ -239,7 +239,7 @@ impl Editors {
         let id = editor.id();
         self.0.update(|editors| {
             if editors.insert(id, editor).is_some() {
-                event!(Level::WARN, "Inserted EditorId that already exists");
+                trace!(TraceLevel::WARN, "Inserted EditorId that already exists");
             }
         });
 
@@ -2023,7 +2023,7 @@ impl MainSplitData {
                                             if let Some(path) = file.path.pop() {
                                                 path
                                             } else {
-                                                tracing::error!("No path");
+                                                trace!(TraceLevel::ERROR, "No path");
                                                 return;
                                             },
                                             move || {
@@ -2492,8 +2492,8 @@ impl MainSplitData {
                     let path = path.clone();
                     create_ext_action(self.scope, move |result| {
                         if let Err(err) = result {
-                            event!(
-                                Level::WARN,
+                            trace!(
+                                TraceLevel::WARN,
                                 "Failed to save as a file: {:?}",
                                 err
                             );
@@ -2547,8 +2547,8 @@ impl MainSplitData {
                     let path = path.clone();
                     create_ext_action(self.scope, move |result| {
                         if let Err(err) = result {
-                            event!(
-                                Level::WARN,
+                            trace!(
+                                TraceLevel::WARN,
                                 "Failed to save as a file: {:?}",
                                 err
                             );
@@ -2642,7 +2642,7 @@ impl MainSplitData {
                     if let Some(path) = file.path.pop() {
                         path
                     } else {
-                        tracing::error!("No path");
+                        trace!(TraceLevel::ERROR, "No path");
                         return;
                     },
                     move || {},
@@ -2660,7 +2660,7 @@ impl MainSplitData {
                     if let Some(path) = file.path.pop() {
                         path
                     } else {
-                        tracing::error!("No path");
+                        trace!(TraceLevel::ERROR, "No path");
                         return;
                     },
                     move || {},
