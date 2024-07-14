@@ -1399,6 +1399,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "directory"
+version = "0.4.0"
+dependencies = [
+ "anyhow",
+ "directories",
+ "meta",
+]
+
+[[package]]
 name = "dirs"
 version = "4.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3196,6 +3205,7 @@ dependencies = [
  "config",
  "criterion",
  "crossbeam-channel",
+ "directory",
  "dmg",
  "flate2",
  "floem",
@@ -3254,7 +3264,7 @@ dependencies = [
  "ahash",
  "anyhow",
  "arc-swap",
- "directories",
+ "directory",
  "floem-editor-core",
  "hashbrown",
  "include_dir",
@@ -3285,6 +3295,7 @@ dependencies = [
  "clap",
  "crossbeam-channel",
  "directories",
+ "directory",
  "dyn-clone",
  "encoding_rs",
  "encoding_rs_io",
