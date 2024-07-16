@@ -2509,6 +2509,7 @@ fn palette_item(
         | PaletteItemContent::SCMReference { .. }
         | PaletteItemContent::TerminalProfile { .. }
         | PaletteItemContent::FileIconTheme { .. }
+        | PaletteItemContent::Encoding { .. }
         | PaletteItemContent::UIIconTheme { .. } => {
             let text = item.filter_text;
             let indices = item.indices;
